@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace BankSystem2
 {
-    class User
+    class User : Account
     {
+        public bool RemoveSelfFromList(string username, string password)
+        {
+            if(Username == username && Password == password)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

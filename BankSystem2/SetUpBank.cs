@@ -8,5 +8,7 @@ namespace BankSystem2
 {
     class SetUpBank
     {
+        public static List<Account> listOfUsers = new List<Account> { new Admin() };
+
     }
 }
