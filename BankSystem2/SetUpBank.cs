@@ -42,19 +42,53 @@ namespace BankSystem2
             {
                 UserMenu(logedInAccount);
             }
-            
+
 
 
         }
 
-        private static void UserMenu(Account logedInAccount)
+        private static void UserMenu(Account logedInUser)
         {
-            
+            int choice = 0;
+            bool parseSuccessfull = false;
+            do
+            {
+
+                Console.WriteLine("USER MENU");
+                Console.WriteLine("[1] See salary");
+                Console.WriteLine("[2] See Role");
+                Console.WriteLine("[3] Delete Account");
+                Console.WriteLine("[4] Log out");
+                Console.Write("Enter choice: ");
+                parseSuccessfull = int.TryParse(Console.ReadLine(), out choice);
+                HandleUserChoice(choice, logedInUser);
+            } while (!parseSuccessfull || choice == 1 || choice == 2);
+        }
+
+        private static void HandleUserChoice(int choice, Account logedInUser)
+        {
+            switch (choice)
+            {
+                case 1:
+                    logedInUser.ShowSalary();
+                    break;
+                case 2:
+                    logedInUser.ShowRole();
+                    break;
+                case 3:
+                    // Kalla på metod för delete här
+                    break;
+                case 4:
+                    LogIn();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private static void AdminMenu(Admin admin)
         {
-            
+
         }
     }
 }
