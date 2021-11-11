@@ -88,7 +88,56 @@ namespace BankSystem2
 
         private static void AdminMenu(Admin admin)
         {
+            int choice = 0;
+            bool parseSuccessfull = false;
+            do
+            {
 
+                Console.WriteLine("USER MENU");
+                Console.WriteLine("[1] See salary");
+                Console.WriteLine("[2] See Role");
+                Console.WriteLine("[3] See all users");
+                Console.WriteLine("[4] Create new users");
+                Console.WriteLine("[5] Remove specfied user");
+                Console.WriteLine("[6] Log out");
+                Console.Write("Enter choice: ");
+                parseSuccessfull = int.TryParse(Console.ReadLine(), out choice);
+                HandleAdminChoice(choice, admin);
+            } while (!parseSuccessfull || choice == 1 || choice == 2);
+
+        }
+
+        private static void HandleAdminChoice(int choice, Admin logedInAdmin)
+        {
+            switch (choice)
+            {
+                case 1:
+                    logedInAdmin.ShowSalary();
+                    break;
+                case 2:
+                    logedInAdmin.ShowRole();
+                    break;
+                case 3:
+                    logedInAdmin.SeeAllUsers(listOfUsers);
+                    break;
+                case 4:
+                    CreateNewUser();
+                    break;
+                case 5:
+                    // Kalla på metod för delete här
+                    break;
+                case 6:
+                    LogIn();
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        private static void CreateNewUser()
+        {
+          
         }
     }
 }
