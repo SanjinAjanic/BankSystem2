@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem2
 {
-    class SetUpBank
+   static class SetUpBank
     {
         public static List<Account> listOfUsers = new List<Account> { new Admin() };
 
@@ -93,7 +93,7 @@ namespace BankSystem2
             do
             {
 
-                Console.WriteLine("USER MENU");
+                Console.WriteLine("ADMIN MENU");
                 Console.WriteLine("[1] See salary");
                 Console.WriteLine("[2] See Role");
                 Console.WriteLine("[3] See all users");
