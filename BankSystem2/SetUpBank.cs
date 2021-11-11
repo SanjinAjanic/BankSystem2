@@ -24,8 +24,10 @@ namespace BankSystem2
                 var user = listOfUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
                 if (user != null)
                 {
+                    logInSuccesful = true;
                     HandleUser(user);
                 }
+                Console.WriteLine("Login failed, try again!");
             } while (!logInSuccesful);
         }
 
@@ -34,10 +36,25 @@ namespace BankSystem2
             if (logedInAccount is Admin)
             {
                 var admin = logedInAccount as Admin;
-               
+                AdminMenu(admin);
             }
+            else
+            {
+                UserMenu(logedInAccount);
+            }
+            
 
 
+        }
+
+        private static void UserMenu(Account logedInAccount)
+        {
+            
+        }
+
+        private static void AdminMenu(Admin admin)
+        {
+            
         }
     }
 }
