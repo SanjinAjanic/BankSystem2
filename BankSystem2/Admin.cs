@@ -33,6 +33,10 @@ namespace BankSystem2
                     Console.WriteLine("User is deleted");
                     SetUpBank.listOfUsers.Remove(user);
                 }
+                else
+                {
+                    Console.WriteLine("Account doesnt not exist");
+                }
             }
             else
             {

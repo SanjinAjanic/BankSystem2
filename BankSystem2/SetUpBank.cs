@@ -16,14 +16,11 @@ namespace BankSystem2
             do
             {
                 Console.WriteLine("\n Login");
-                Console.Write("Enter Username : ");
-                var username = Console.ReadLine();
-                Console.Write("Enter Password : ");
-                var password = Console.ReadLine();
-
+                GetUserInfo(out string username, out string password);
                 var user = listOfUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
                 if (user != null)
                 {
+                    Console.Clear();
                     logInSuccesful = true;
                     HandleUser(user);
                 }
@@ -42,9 +39,6 @@ namespace BankSystem2
             {
                 UserMenu(logedInAccount);
             }
-
-
-
         }
 
         private static void UserMenu(Account logedInUser)
@@ -53,8 +47,7 @@ namespace BankSystem2
             bool parseSuccessfull = false;
             do
             {
-
-                Console.WriteLine("USER MENU");
+                Console.WriteLine("\nUSER MENU");
                 Console.WriteLine("[1] See salary");
                 Console.WriteLine("[2] See Role");
                 Console.WriteLine("[3] Delete Account");
@@ -62,11 +55,12 @@ namespace BankSystem2
                 Console.Write("Enter choice: ");
                 parseSuccessfull = int.TryParse(Console.ReadLine(), out choice);
                 HandleUserChoice(choice, logedInUser);
-            } while (!parseSuccessfull || choice == 1 || choice == 2);
+            } while (!parseSuccessfull || choice !=4);
         }
 
         private static void HandleUserChoice(int choice, Account logedInUser)
         {
+            Console.Clear();
             switch (choice)
             {
                 case 1:
@@ -88,11 +82,8 @@ namespace BankSystem2
 
         public static void DeleteUser(Account logedInAccount)
         {
-            
-            Console.Write("Enter Username : ");
-            var username = Console.ReadLine();
-            Console.Write("Enter Password : ");
-            var password = Console.ReadLine();
+            Console.WriteLine("\nDelete user");
+            GetUserInfo(out string username, out string password);
             if (logedInAccount is User)
             {
                 var user = logedInAccount as User;
@@ -101,6 +92,10 @@ namespace BankSystem2
                     Console.WriteLine("User is deleted");
                     listOfUsers.Remove(user);
                     LogIn();
+                }
+                else
+                {
+                    Console.WriteLine("Username or password is incorrect please try again");
                 }
             }
             else if(logedInAccount is Admin)
@@ -116,8 +111,7 @@ namespace BankSystem2
             bool parseSuccessfull = false;
             do
             {
-
-                Console.WriteLine("ADMIN MENU");
+                Console.WriteLine("\nADMIN MENU");
                 Console.WriteLine("[1] See salary");
                 Console.WriteLine("[2] See Role");
                 Console.WriteLine("[3] See all users");
@@ -133,6 +127,7 @@ namespace BankSystem2
 
         private static void HandleAdminChoice(int choice, Admin logedInAdmin)
         {
+            Console.Clear();
             switch (choice)
             {
                 case 1:
@@ -156,24 +151,25 @@ namespace BankSystem2
                 default:
                     break;
             }
-
         }
 
         private static void CreateNewUser()
         {
-            Console.Write("Enter Username : ");
-            var username = Console.ReadLine();
-            Console.WriteLine("Enter Password : ");
-            var password = Console.ReadLine();
+            Console.WriteLine("\nCreate user");
+            GetUserInfo(out string username, out string password);
            
             if (VerifyUser(username, password))
             {
-                Console.WriteLine("Role : ");
+                Console.Write("Role : ");
                 string role = Console.ReadLine();
-                Console.WriteLine("Salary : ");
+                Console.Write("Salary : ");
                 int.TryParse(Console.ReadLine(), out int salary);
                 User newUser = new User { Username = username, Password = password, Role = role, Salary = salary };
                 listOfUsers.Add(newUser);
+            }
+            else
+            {
+                Console.WriteLine("Wrong input try again ");
             }
         }
         public static bool VerifyUser(string username, string password)
@@ -186,6 +182,14 @@ namespace BankSystem2
             bool validPassword = password.Any(p => char.IsDigit(p) && password.Any(p => char.IsLetter(p)));
             
             return validUserName && validPassword;
+        }
+
+        public static void GetUserInfo(out string username, out string password)
+        {
+            Console.Write("Enter Username : ");
+            username = Console.ReadLine();
+            Console.Write("Enter Password : ");
+            password = Console.ReadLine();
         }
     }
 }
