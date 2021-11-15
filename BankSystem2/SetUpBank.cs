@@ -18,7 +18,7 @@ namespace BankSystem2
                 Console.WriteLine("\n Login");
                 Console.Write("Enter Username : ");
                 var username = Console.ReadLine();
-                Console.WriteLine("Enter Password : ");
+                Console.Write("Enter Password : ");
                 var password = Console.ReadLine();
 
                 var user = listOfUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
@@ -76,13 +76,32 @@ namespace BankSystem2
                     logedInUser.ShowRole();
                     break;
                 case 3:
-                    // Kalla på metod för delete här
+                    DeleteUser(logedInUser);
                     break;
                 case 4:
                     LogIn();
                     break;
                 default:
                     break;
+            }
+        }
+
+        public static void DeleteUser(Account logedInAccount)
+        {
+            
+            Console.Write("Enter Username : ");
+            var username = Console.ReadLine();
+            Console.Write("Enter Password : ");
+            var password = Console.ReadLine();
+            if (logedInAccount is User)
+            {
+                var user = logedInAccount as User;
+                if (user.RemoveSelfFromList(username, password))
+                {
+                    Console.WriteLine("User is deleted");
+                    listOfUsers.Remove(user);
+                    LogIn();
+                }
             }
         }
 
