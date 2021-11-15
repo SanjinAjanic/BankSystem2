@@ -22,9 +22,7 @@ namespace BankSystemTestProject
         }
 
         [Test]
-        [TestCase("username1", "password1")]
-       
-        
+        [TestCase("username1", "password1")] 
         public void Test_VerifyUserSucces(string username, string password)
         {
             var actual = BankSystem2.SetUpBank.VerifyUser(username, password);

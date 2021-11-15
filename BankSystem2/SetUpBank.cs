@@ -103,6 +103,11 @@ namespace BankSystem2
                     LogIn();
                 }
             }
+            else if(logedInAccount is Admin)
+            {
+                var admin = logedInAccount as Admin;
+                admin.RemoveUserFromList(username, password);
+            }
         }
 
         private static void AdminMenu(Admin admin)
@@ -143,7 +148,7 @@ namespace BankSystem2
                     CreateNewUser();
                     break;
                 case 5:
-                    // Kalla på metod för delete här
+                    DeleteUser(logedInAdmin);
                     break;
                 case 6:
                     LogIn();

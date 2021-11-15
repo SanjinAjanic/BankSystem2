@@ -22,5 +22,27 @@ namespace BankSystem2
                 Console.WriteLine($"{user.Username} | {user.Password}");
             }
         }
+        public void RemoveUserFromList(string username, string password)
+        {
+            if (!IsAccountAdmin(username, password))
+            {
+                var user = SetUpBank.listOfUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
+
+                if (user != null)
+                {
+                    Console.WriteLine("User is deleted");
+                    SetUpBank.listOfUsers.Remove(user);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Admin cant be removed!");
+            }
+        }
+        public bool IsAccountAdmin(string username, string password)
+        {
+            return Username == username && Password == password;
+        }
+
     }
 }
