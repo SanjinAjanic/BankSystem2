@@ -20,5 +20,15 @@ namespace BankSystemTestProject
             var actual = BankSystem2.SetUpBank.VerifyUser(username, password);
             Assert.IsFalse(actual);
         }
+
+        [Test]
+        [TestCase("username1", "password1")]
+       
+        
+        public void Test_VerifyUserSucces(string username, string password)
+        {
+            var actual = BankSystem2.SetUpBank.VerifyUser(username, password);
+            Assert.IsTrue(actual);
+        }
     }
 }

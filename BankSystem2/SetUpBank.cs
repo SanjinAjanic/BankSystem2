@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem2
 {
-   public static class SetUpBank
+  public static class SetUpBank
     {
         public static List<Account> listOfUsers = new List<Account> { new Admin() };
 
@@ -31,7 +31,7 @@ namespace BankSystem2
             } while (!logInSuccesful);
         }
 
-        public static void HandleUser(Account logedInAccount)
+        private static void HandleUser(Account logedInAccount)
         {
             if (logedInAccount is Admin)
             {
@@ -47,7 +47,7 @@ namespace BankSystem2
 
         }
 
-        public static void UserMenu(Account logedInUser)
+        private static void UserMenu(Account logedInUser)
         {
             int choice = 0;
             bool parseSuccessfull = false;
@@ -65,7 +65,7 @@ namespace BankSystem2
             } while (!parseSuccessfull || choice == 1 || choice == 2);
         }
 
-        public static void HandleUserChoice(int choice, Account logedInUser)
+        private static void HandleUserChoice(int choice, Account logedInUser)
         {
             switch (choice)
             {
@@ -86,7 +86,7 @@ namespace BankSystem2
             }
         }
 
-        public static void AdminMenu(Admin admin)
+        private static void AdminMenu(Admin admin)
         {
             int choice = 0;
             bool parseSuccessfull = false;
@@ -107,7 +107,7 @@ namespace BankSystem2
 
         }
 
-        public static void HandleAdminChoice(int choice, Admin logedInAdmin)
+        private static void HandleAdminChoice(int choice, Admin logedInAdmin)
         {
             switch (choice)
             {
@@ -135,7 +135,7 @@ namespace BankSystem2
 
         }
 
-        public static void CreateNewUser()
+        private static void CreateNewUser()
         {
             Console.Write("Enter Username : ");
             var username = Console.ReadLine();
