@@ -103,7 +103,7 @@ namespace BankSystem2
                 Console.Write("Enter choice: ");
                 parseSuccessfull = int.TryParse(Console.ReadLine(), out choice);
                 HandleAdminChoice(choice, admin);
-            } while (!parseSuccessfull || choice == 1 || choice == 2);
+            } while (!parseSuccessfull || choice != 6);
 
         }
 
@@ -137,7 +137,31 @@ namespace BankSystem2
 
         private static void CreateNewUser()
         {
-          
+            Console.Write("Enter Username : ");
+            var username = Console.ReadLine();
+            Console.WriteLine("Enter Password : ");
+            var password = Console.ReadLine();
+           
+            if (VerifyUser(username, password))
+            {
+                Console.WriteLine("Role : ");
+                string role = Console.ReadLine();
+                Console.WriteLine("Salary : ");
+                int.TryParse(Console.ReadLine(), out int salary);
+                User newUser = new User { Username = username, Password = password, Role = role, Salary = salary };
+                listOfUsers.Add(newUser);
+            }
+        }
+        public static bool VerifyUser(string username, string password)
+        {
+            if (listOfUsers.Any(u => u.Username == username))
+            {
+                return false;
+            }
+            bool validUserName = username.Any(u => char.IsDigit(u) && username.Any(u => char.IsLetter(u)));
+            bool validPassword = password.Any(p => char.IsDigit(p) && password.Any(p => char.IsLetter(p)));
+            
+            return validUserName && validPassword;
         }
     }
 }
