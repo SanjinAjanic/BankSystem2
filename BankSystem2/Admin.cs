@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem2
 {
-    class Admin : Account
+    public class Admin : Account
     {
         public Admin()
         {
