@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem2
 {
-  public static class SetUpBank
+    public static class SetUpBank
     {
         public static List<Account> listOfUsers = new List<Account> { new Admin() };
 
@@ -17,20 +17,24 @@ namespace BankSystem2
             {
                 Console.WriteLine("\n Login");
                 GetUserInfo(out string username, out string password);
-                var user = listOfUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
-                if (user != null)
+                var account = CanAccountLogIn(username, password);
+                if (account != null)
                 {
                     Console.Clear();
                     logInSuccesful = true;
-                    HandleUser(user);
+                    HandleUser(account);
                 }
+
                 Console.WriteLine("Login failed, try again!");
             } while (!logInSuccesful);
         }
-
+        public static Account CanAccountLogIn(string username, string password)
+        {
+            return listOfUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
+        }
         private static void HandleUser(Account logedInAccount)
         {
-            if (logedInAccount is Admin)
+            if (IsAccountAdmin(logedInAccount))
             {
                 var admin = logedInAccount as Admin;
                 AdminMenu(admin);
@@ -55,7 +59,7 @@ namespace BankSystem2
                 Console.Write("Enter choice: ");
                 parseSuccessfull = int.TryParse(Console.ReadLine(), out choice);
                 HandleUserChoice(choice, logedInUser);
-            } while (!parseSuccessfull || choice !=4);
+            } while (!parseSuccessfull || choice != 4);
         }
 
         private static void HandleUserChoice(int choice, Account logedInUser)
@@ -98,7 +102,7 @@ namespace BankSystem2
                     Console.WriteLine("Username or password is incorrect please try again");
                 }
             }
-            else if(logedInAccount is Admin)
+            else if (IsAccountAdmin(logedInAccount))
             {
                 var admin = logedInAccount as Admin;
                 admin.RemoveUserFromList(username, password);
@@ -157,7 +161,7 @@ namespace BankSystem2
         {
             Console.WriteLine("\nCreate user");
             GetUserInfo(out string username, out string password);
-           
+
             if (VerifyUser(username, password))
             {
                 Console.Write("Role : ");
@@ -180,7 +184,7 @@ namespace BankSystem2
             }
             bool validUserName = username.Any(u => char.IsDigit(u) && username.Any(u => char.IsLetter(u)));
             bool validPassword = password.Any(p => char.IsDigit(p) && password.Any(p => char.IsLetter(p)));
-            
+
             return validUserName && validPassword;
         }
 
@@ -190,6 +194,11 @@ namespace BankSystem2
             username = Console.ReadLine();
             Console.Write("Enter Password : ");
             password = Console.ReadLine();
+        }
+        public static bool IsAccountAdmin(Account account)
+        {
+            if (account is Admin) return true;
+            return false;
         }
     }
 }
