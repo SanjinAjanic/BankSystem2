@@ -8,48 +8,72 @@ using System.Threading.Tasks;
 
 namespace BankSystemTestProject
 {
-    class IntegrationTest
+    public class IntegrationTest
     {
-        public void Test()
+        [SetUp]
+        public void Setup()
         {
-            User testUser = new User { Username = "testUser1", Password = "testUser1", Role = "Städare", Salary = 1000 };
-            BankSystem2.SetUpBank.listOfUsers.Add(testUser);
-
+            BankSystem2.SetUpBank.listOfUsers.Add(new User { Username = "TestUsername1", Password = "TestPassword1" });
         }
         [Test]
-
-        public void Test_SalaryCheck_ShowSalary()
+        [TestCase("admin1", "admin1234")]
+        [TestCase("TestUsername1", "TestPassword1")]
+        public void Test_Login_Success(string username, string password)
         {
-
-            var testUser = new User { Salary = 1000 };
-            var salary = testUser.Salary;
-
-            var expected = 1000;
-            var actual = salary;
-
-            Assert.AreEqual(actual, expected);
-        }
-        //public void Test_SalaryCheck_ShowSalary()
-        //{
-        //    var testUser = new User { Salary = -1 };
-        //    var salary = testUser.Salary;
-
-        //    var expected = 1000;
-        //    var actual = salary;
-
-        //    Assert.AreEqual(actual, expected);
-        //}
-        [Test]
-        public void Test_Login()
-        {
-            string username = "kalle1";
-            string password = "kalle1234";
-            User user = new User { Username = "kalle1", Password = "kalle1234" };
-            SetUpBank.listOfUsers.Add(user);
             var account = SetUpBank.CanAccountLogIn(username, password);
-            var actual = SetUpBank.IsAccountAdmin(account);
+            Assert.IsNotNull(account);
 
-            Assert.IsTrue(actual);
+        }
+        [Test]
+        [TestCase("notExistingAccount", "notExistingAccount")]
+        [TestCase(null, null)]
+        public void Test_Login_Fail(string username, string password)
+        {
+            var account = SetUpBank.CanAccountLogIn(username, password);
+            Assert.IsNull(account);
+
+        }
+        [Test]
+        [TestCase("admin1", "admin1234")]
+        public void Test_IsAccountAdmin_Success(string username, string password)
+        {
+            var account = SetUpBank.CanAccountLogIn(username, password);
+            var isAccountAdmin = SetUpBank.IsAccountAdmin(account);
+            Assert.IsTrue(isAccountAdmin);
+
+        }
+        [Test]
+        [TestCase("TestUsername1", "TestPassword1")]
+        [TestCase(null, null)]
+        public void Test_IsAccountAdmin_Fail(string username, string password)
+        {
+            var account = SetUpBank.CanAccountLogIn(username, password);
+            var isAccountAdmin = SetUpBank.IsAccountAdmin(account);
+            Assert.IsFalse(isAccountAdmin);
+
+        }
+        [Test]
+        [TestCase("TestUsername1", "TestPassword1")]
+        public void Test_DeleteUserAsAdmin(string usernameToDelete, string passwordToDelete)
+        {
+            var account = SetUpBank.CanAccountLogIn("admin1", "admin1234");
+            var admin = account as Admin;
+            admin.RemoveUserFromList(usernameToDelete, passwordToDelete);
+            var isAccountRemoved = SetUpBank.IsAccountRemovedFromList(usernameToDelete, passwordToDelete);
+            Assert.IsTrue(isAccountRemoved);
+
+        }
+        [Test]
+        [TestCase("TestUsername1", "TestPassword1")]
+        public void Test_DeleteUserAsUser(string usernameToDelete, string passwordToDelete)
+        {
+            var account = SetUpBank.CanAccountLogIn(usernameToDelete, passwordToDelete);
+            var user = account as User;
+            user.RemoveSelfFromList(usernameToDelete, passwordToDelete);
+            var isAccountRemoved = SetUpBank.IsAccountRemovedFromList(usernameToDelete, passwordToDelete);
+
+            Assert.IsTrue(isAccountRemoved);
+
         }
     }
 }

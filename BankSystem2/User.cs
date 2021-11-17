@@ -12,6 +12,7 @@ namespace BankSystem2
         {
             if(Username == username && Password == password)
             {
+                SetUpBank.listOfUsers.Remove(this);
                 return true;
             }
             return false;

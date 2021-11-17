@@ -32,7 +32,14 @@ namespace BankSystem2
         {
             return listOfUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
         }
-        private static void HandleUser(Account logedInAccount)
+        public static bool IsAccountRemovedFromList(string username, string password)
+        {
+            var user = listOfUsers.FirstOrDefault(u => u.Username == username && u.Password == password);
+            if (user != null) return false;
+            else return true;
+
+        }
+        public static void HandleUser(Account logedInAccount)
         {
             if (IsAccountAdmin(logedInAccount))
             {
@@ -45,7 +52,7 @@ namespace BankSystem2
             }
         }
 
-        private static void UserMenu(Account logedInUser)
+        public static void UserMenu(Account logedInUser)
         {
             int choice = 0;
             bool parseSuccessfull = false;
@@ -62,7 +69,7 @@ namespace BankSystem2
             } while (!parseSuccessfull || choice != 4);
         }
 
-        private static void HandleUserChoice(int choice, Account logedInUser)
+        public static void HandleUserChoice(int choice, Account logedInUser)
         {
             Console.Clear();
             switch (choice)
@@ -93,9 +100,11 @@ namespace BankSystem2
                 var user = logedInAccount as User;
                 if (user.RemoveSelfFromList(username, password))
                 {
-                    Console.WriteLine("User is deleted");
-                    listOfUsers.Remove(user);
-                    LogIn();
+                    if (IsAccountRemovedFromList(username, password))
+                    {
+                        Console.WriteLine("User is deleted");
+                        LogIn();
+                    }
                 }
                 else
                 {
@@ -109,7 +118,7 @@ namespace BankSystem2
             }
         }
 
-        private static void AdminMenu(Admin admin)
+        public static void AdminMenu(Admin admin)
         {
             int choice = 0;
             bool parseSuccessfull = false;
@@ -129,7 +138,7 @@ namespace BankSystem2
 
         }
 
-        private static void HandleAdminChoice(int choice, Admin logedInAdmin)
+        public static void HandleAdminChoice(int choice, Admin logedInAdmin)
         {
             Console.Clear();
             switch (choice)
@@ -144,7 +153,7 @@ namespace BankSystem2
                     logedInAdmin.SeeAllUsers(listOfUsers);
                     break;
                 case 4:
-                    CreateNewUser();
+                    CreateNewUser(logedInAdmin);
                     break;
                 case 5:
                     DeleteUser(logedInAdmin);
@@ -157,23 +166,26 @@ namespace BankSystem2
             }
         }
 
-        private static void CreateNewUser()
+        public static void CreateNewUser(Admin logedinAdmin)
         {
-            Console.WriteLine("\nCreate user");
-            GetUserInfo(out string username, out string password);
+            if (IsAccountAdmin(logedinAdmin))
+            {
+                Console.WriteLine("\nCreate user");
+                GetUserInfo(out string username, out string password);
 
-            if (VerifyUser(username, password))
-            {
-                Console.Write("Role : ");
-                string role = Console.ReadLine();
-                Console.Write("Salary : ");
-                int.TryParse(Console.ReadLine(), out int salary);
-                User newUser = new User { Username = username, Password = password, Role = role, Salary = salary };
-                listOfUsers.Add(newUser);
-            }
-            else
-            {
-                Console.WriteLine("Wrong input try again ");
+                if (VerifyUser(username, password))
+                {
+                    Console.Write("Role : ");
+                    string role = Console.ReadLine();
+                    Console.Write("Salary : ");
+                    int.TryParse(Console.ReadLine(), out int salary);
+                    User newUser = new User { Username = username, Password = password, Role = role, Salary = salary };
+                    listOfUsers.Add(newUser);
+                }
+                else
+                {
+                    Console.WriteLine("Wrong input try again ");
+                }
             }
         }
         public static bool VerifyUser(string username, string password)
