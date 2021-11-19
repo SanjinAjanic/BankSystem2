@@ -190,6 +190,7 @@ namespace BankSystem2
         }
         public static bool VerifyUser(string username, string password)
         {
+            if (username == null || password == null) return false;
             if (listOfUsers.Any(u => u.Username == username))
             {
                 return false;
